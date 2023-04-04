@@ -18,18 +18,18 @@ __Problem:__
 - Scaling Up/Down becomes complex.
 - Upfront capital Expenses and Regular Operation Expenses.
 - Most of the processes are manual
-- Difficult to autpomate and it is time consuming.
+- Difficult to automate and it is time consuming.
 
 __Solution:__
 
-The solution to these problems is haing a cloud computing setup. The benefits include:
+The solution to these problems is hirng a cloud computing setup. The benefits include:
 - We do not pay for the upfront cost for procuring the resource - we pay as go.
 - Infrastructure as a Service (IAAC)
 - Flexibility - Elastic in nature, we can scale out or scale in as needed or required.
 - Managing Infrastructure becomes easier.
 - Automation - Every step and process can be automated to avoid human errors.
 - Saves time.
-- 
+
 __AWS Services__
 
 The services we are going to be using in this Project include:
@@ -59,7 +59,7 @@ __AWS Cloud Multi Tier Architecture__
 ![image](./images/aws-arc.PNG)
 
 
-Users will access our website by using a URL and this URL will point to an endpoint. This entry will be mentioned in __namesilo__ DNS. The users of the Application will use this end point to connect to the Load Balancer by using _https_. The certificate for the _https_ encryption will be mentioned in the Amazon Certificate Manager Service (ACM). Our Lpad balancer will be in a security group of it's own and will only allow _https_ traffic. Then our Application Load Balancer will route the request to Tomcat Instances. Apache Tomcat will be running on some set of Ec@ instances wihich will be managed by our Auto Scaling Group - as per high or low load, these instance capacity will be scaled out or scaled in. These Ec2 instances where tomcat is running will be in a seperate security group which will __only__ allow traffic from __port 8080__ from Load Balancer.
+Users will access our website by using a URL and this URL will point to an endpoint. This entry will be mentioned in __namesilo__ DNS. The users of the Application will use this end point to connect to the Load Balancer by using _https_. The certificate for the _https_ encryption will be mentioned in the Amazon Certificate Manager Service (ACM). Our Lpad balancer will be in a security group of it's own and will only allow _https_ traffic. Then our Application Load Balancer will route the request to Tomcat Instances. Apache Tomcat will be running on some set of Ec2 instances wihich will be managed by our Auto Scaling Group - as per high or low load, these instance capacity will be scaled out or scaled in. These Ec2 instances where tomcat is running will be in a seperate security group which will __only__ allow traffic from __port 8080__ from Load Balancer.
 The information of the IP address of our backend services will be mention in Route 53 private DNS zone which tomcat will use in accessing the backend services - Mysql, Memcache and RabbitMQ.
 These backend services will be in a seperate security group.
 
