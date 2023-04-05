@@ -59,14 +59,14 @@ __AWS Cloud Multi Tier Architecture__
 ![image](./images/aws-arc.PNG)
 
 
-Users will access our website by using a URL and this URL will point to an endpoint. This entry will be mentioned in __namesilo__ DNS. The users of the Application will use this end point to connect to the Load Balancer by using _https_. The certificate for the _https_ encryption will be mentioned in the Amazon Certificate Manager Service (ACM). Our Lpad balancer will be in a security group of it's own and will only allow _https_ traffic. Then our Application Load Balancer will route the request to Tomcat Instances. Apache Tomcat will be running on some set of Ec2 instances wihich will be managed by our Auto Scaling Group - as per high or low load, these instance capacity will be scaled out or scaled in. These Ec2 instances where tomcat is running will be in a seperate security group which will __only__ allow traffic from __port 8080__ from Load Balancer.
-The information of the IP address of our backend services will be mention in Route 53 private DNS zone which tomcat will use in accessing the backend services - Mysql, Memcache and RabbitMQ.
+Users will access our website by using a URL that will point to an endpoint. This entry will be mentioned in __namesilo__ DNS. The users of the Application will use this end point to connect to the Load Balancer by using _https_. The certificate for the _https_ encryption will be mentioned in the Amazon Certificate Manager Service (ACM). Our Load balancer will be in a security group of it's own and will only allow _https_ traffic. Then our Application Load Balancer will route the request to Tomcat Instances. Apache Tomcat will be running on some set of Ec2 instances which will be managed by an __Auto Scaling Group__ - as per high or low load, these instance capacity will be scaled out or scaled in. These Ec2 instances where tomcat is running will be in a seperate security group which will __only__ allow traffic from __port 8080__ from Load Balancer.
+The information of the IP address of our backend services will be mention in __Route 53 private DNS zone__ which tomcat will use in accessing the backend services - __Mysql, Memcache and RabbitMQ__.
 These backend services will be in a seperate security group.
 
 __N/B:__
 Purchase a domain name from _godaddy, namesilo, namecheap_ etc and do the validation from the domain provider.
 
-__FLOW OF EXECUTION__
+## __FLOW OF EXECUTION__
 
 - Login to AWS Account
 - Create Key pairs
@@ -94,7 +94,7 @@ We create Security Group for our Elastic Load Balancer.
 ![image](./images/elb-sg.PNG)
 ![image](./images/elb-sg.PNG)
 
-We will add rules for IPv4 and IPv6 for http port 80 and https port 443. We will be needing the http port 80 for initial setup but the main goal is to connect securely using https port 443.
+We will add rules for __IPv4__ and __IPv6__ for __http port 80__ and __https port 443__. We will be needing the http port 80 for initial setup but the main goal is to connect securely using https port 443.
 
 Next, we create security group for our Tomcat application instances.
 
@@ -116,8 +116,7 @@ We will save the backend security group to create the backend security group, th
 
 __Configure instances with user data__
 
-We will launch our Ec2 instances using __User data__. The bash scripts from our source code to provision our services.
-We can find the user data in our source code.
+We will use the bash scripts from our source code to provision our services and launch our Ec2 instances using __User data__. 
 
 `$ git clone https://github.com/devopshydclub/vprofile-project.git`
 
@@ -135,7 +134,7 @@ We can find the user data in our source code.
 
 ![image](./images/userdata.PNG)
 
-First we will create a Centos 7 AMI instance and provision __Mysql__ using the bash script below through the __user data__ section while launching the instance.
+First we will create a __Centos 7 AMI instance__ and provision __Mysql__ using the bash script below through the __user data__ section while launching the instance.
 
 ```
 #!/bin/bash
@@ -177,11 +176,11 @@ sudo firewall-cmd --reload
 sudo systemctl restart mariadb
 ```
 
-We will use the __backend Security Group__ and the keypair to Lauch the instance while we use the __user data__ section to provision the instance.
+The __backend Security Group__ and the keypair will be used to Lauch the instance while the __user data__ section will be used to provision the instance.
 
 ![image](./images/userdata-mysql.PNG)
 
-The instance will take sometime to come up because it will be provision the instance using the bash script in the user data.
+The instance will take sometime to initialize because it will be provisioning the instance using the bash script in the user data.
 
 ![image](./images/db.PNG)
 
