@@ -316,7 +316,10 @@ We will use the __tomcat security group__ for the tomcat server and the user dat
 ![image](./images/qwa.PNG)
 
 To validate, we check the status of the __tomcat__ service.
-......................................
+
+`$ sudo systemctl status tomcat9`
+
+![image](./images/t.PNG)
 
 Make sure to open port 22 for ssh.
 
@@ -370,6 +373,308 @@ Create an __IAM__ user make sure the __Identity Access Management (IAM)__ User h
 
 Make sure to download the __.csv__ file
 ![image](./images/iam6.PNG)
+
+Go to __security credentials__ and set up the __access key__ and __secret key__ that we will use to configure the __AWSCLI__.
+
+![image](./images/security-cred.PNG)
+![image](./images/security-cred2.PNG)
+![image](./images/security-cred3.PNG)
+![image](./images/security-cred4.PNG)
+![image](./images/security-cred5.PNG)
+![image](./images/security-cred6.PNG)
+
+We use the the keys to configure  the __AWSCLI__
+
+![image](./images/configure-awscli.PNG)
+
+__Upload the build artifact to S3 bucket__
+
+Create the __S3 bucket__  from the command line.
+
+`$ aws s3 mb vprofile-artifacts`
+
+![image](./images/creates3.PNG)
+
+- The S3 bucket name has to be unique because there are other existing buckets in S3.
+
+To upload the artifact to S3 bucket
+
+`$ cd vprofile-project`
+
+`$ cd target`
+
+`$ aws s3 cp vprofile-v2.war s3://vprofile-artifacts/`
+
+`$ aws s3 ls s3://vprofile-artifacts/`
+
+![image](./images/up.PNG)
+
+__Download artifact to tomcat Ec2 Instance__
+
+In other to download the artifact into the tomcat Ec2 instance, we will create a role - IAM role
+
+![image](./images/role.PNG)
+![image](./images/role2.PNG)
+![image](./images/role3.PNG)
+![image](./images/role4.PNG)
+
+We setup the tomcat Ec2 Instance to use the IAM role.
+
+![image](./images/modify1.PNG)
+![image](./images/modify2.PNG)
+
+Go into the __/var/lib/tomcat9__
+
+`$ cd /var/lib/tomcat9`
+
+`$ ls`
+
+Go into the __webapps__ directory
+
+`$ cd webapps`
+
+Stop the tomcat server
+
+`$ sudo systemctl stop tomcat9`
+
+Remove the __ROOT__ directory in the webapps directory
+
+`$ sudo rm -rf ROOT`
+
+![image](./images/rut.PNG)
+
+To download the artifact from the S3 bucket, we need to install the __awscli__ in the tomcat server
+
+![image](./images/cli.PNG)
+
+We dont need to configure the __awscli__, we will jjst use the attached role.
+
+To download the artifact to tomcat
+
+`$ aws s3 ls s3://vprofile-artifacts`
+
+Copy the artifact into __/tmp/__ directory
+
+`$ aws s3 cp s3://vprofile-artifacts/profile-v2.war /tmp/`
+
+`$ cd /tmp/`
+
+`$ ls`
+
+![image](./images/cp-tmp.PNG)
+
+We make the __vprofile-v2.war__ the default directory in the __webapps__ directory i.e __ROOT__
+
+`$ sudo cp vprofile-v2.war /var/lib/tomcat9/webapps/ROOT.war`
+
+Start the tomcat server
+
+`$ sudo systemctl start tomcat9`
+
+![image](./images/defa.PNG)
+![image](./images/q.PNG)
+
+To validate that the setup in __applications.properties__ has the right changes
+
+
+`$ sudo -i`
+
+`$ cd /var/lib/tomcat9/webapps/ROOT`
+
+`$ cd WEB-INF`
+
+`$ cd classes`
+
+`$ cat application.properties`
+
+![image](./images/ma.PNG)
+
+We can see the __Route 53__ update in the __application.properties__ file.
+
+We can install __telnet__ to check for connectivity to the backend servers.
+
+`$ sudo apt install telnet -y`
+
+and run the commands to check if we are able to connect to the backend servers
+
+`$ telnet db01.vprofile.in 3306`
+
+`$ telnet mc01.vprofile.in 11211`
+
+`$ telnet rmq01.vprofile.in 5672`
+
+![image](./images/telnet.PNG)
+
+When the tomcat application is not able to connect to backend servers, we check the ports numbers and IPs that it is using to connect.
+
+To disconnect, we use `ctrl + ]` which takes you into the telnet console then `close`
+
+`$ ctrl + ]`
+
+`telnet> close`
+
+__Set up Elastic Load Balancer with HTTPS (Amazon Certificate Manager)__
+
+To create the Load Balancer, we need to first create a __Target group__ for the tomcat instances that the Load Balancer will connect to.
+
+![image](./images/tg1.PNG)
+![image](./images/tg2.PNG)
+![image](./images/tg3.PNG)
+![image](./images/tg4.PNG)
+![image](./images/tg5.PNG)
+![image](./images/tg6.PNG)
+![image](./images/tg7.PNG)
+![image](./images/tg8.PNG)
+
+Next we create the __Load Balancer__
+
+![image](./images/lb1.PNG)
+![image](./images/lb2.PNG)
+
+We select atleast __2 availability zones(AZ)__ for High Availability of the Load balancer.
+
+![image](./images/lb3.PNG)
+
+Add listeners __HTTP port 80__ and __HTTPS port 443__ to forward traffic to the __security group__ of the tomcat.
+
+![image](./images/lb4.PNG)
+
+When we select the __HTTPS__, we must mention the certificate that we have validated with the domain provider of our domain name i.e __mydevopsproject.top__
+
+![image](./images/lb5.PNG)
+
+- Make sure you are in the right region with the certificate and the certificate is validated.
+
+Then we crteate the Load Balancer
+
+![image](./images/lb-.PNG)
+![image](./images/l.PNG)
+
+__Map Elastic Load Balancer endpoint to website name in _Namesilo_ DNS__
+
+
+Copy the __DNS Name__ of the Load balancer
+
+![image](./images/de.PNG)
+
+Log into the domain service provider in this case -  __namesilo.com__.
+
+Go to  __manage DNS__ in create a __C_NAME__.
+
+We set the hostname ( __vprofile__ ) to point to the  __target hostname__ ( __DNS Name__ copied from the Load Balancer)
+
+![image](./images/qq.PNG)
+![image](./images/11.PNG)
+
+Wait for the Load Balancer to become __active__
+
+![image](./images/qwq.PNG)
+
+Then we can access the app from the webpage using 
+
+`https://vprofileapp.mydevopsproject.top`
+
+![image](./images/vc.PNG)
+
+Login using the log in details below
+
+Login: __admin_vp__
+
+Password: __admin_vp__
+
+![image](./images/er.PNG)
+
+__Verify our entire setup__
+
+Succesful login shows that the database server is connected.
+
+To check if the rabbitMQ is functioning, we click on __rabitMQ__ on the website.
+
+![image](./images/po.PNG)
+
+To check the __memcached__, click on all users and select a user.
+
+![image](./images/xz.PNG)
+
+Then go back and select the same user
+
+![image](./images/xz2.PNG)
+
+We will find out that the first time we selected the user the __data__ was from the __Database__ and it took longer time to open but the second time it was faster to access and was from the __cache__.
+
+__Create an Auto Scaling Group for the Apache tomcat Instances__
+
+To setup __Auto Scaling Group__ for our tomcat Ec2 Instance,
+
+First, we need to create the __AMI__ of the instance to be used to configure our __Launch Configuration/Launch Template__.
+
+![image](./images/ami.PNG)
+![image](./images/ami2.PNG)
+
+Create the __Launch Configurations__ for the Auto Scaling Group.
+
+![image](./images/lc1.PNG)
+![image](./images/lc2.PNG)
+![image](./images/lc3.PNG)
+![image](./images/lc4.PNG)
+![image](./images/lc5.PNG)
+![image](./images/lc6.PNG)
+
+Create __Auto Scaling Group__
+
+Swith to __lauch Configurations__ and select our launch configuration from the drop down.
+
+![image](./images/sw.PNG)
+
+Select all Availability Zones for high availability so our instance can be lauched in any of the zones.
+
+![image](./images/az.PNG)
+
+![image](./images/re.PNG)
+![image](./images/re2.PNG)
+![image](./images/re3.PNG)
+![image](./images/re4.PNG)
+![image](./images/re5.PNG)
+![image](./images/re6.PNG)
+
+The ASG lauches two instances as per our Lauch configuration set up
+
+![image](./images/2ins.PNG)
+
+We can now terminate the __vprofile-app01__ as we have created an Auto Scaling Group for it.
+
+The new instances can be seen in our __target group__
+
+![image](./images/tgi.PNG)
+
+We have successfully employed __Lift and Shift to Migration Approach__ to migrate our application to the cloud __AWS Cloud__.
+
+- All scripts for this project can be found in [vprofile-project](https://github.com/dybran/vprofile-project).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
