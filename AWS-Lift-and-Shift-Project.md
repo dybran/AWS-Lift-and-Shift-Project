@@ -308,7 +308,7 @@ The user data for the provisioning of our tomcat
 sudo apt update
 sudo apt upgrade -y
 sudo apt install openjdk-8-jdk -y
-sudo apt install tomcat8 tomcat9-admin tomcat9-docs tomcat9-common git -y
+sudo apt install tomcat9 tomcat9-admin tomcat9-docs tomcat9-common git -y
 ```
 We will use the __tomcat security group__ for the tomcat server and the user data section to provision the instance.
 
