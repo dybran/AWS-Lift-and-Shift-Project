@@ -23,7 +23,7 @@ __Problem:__
 __Solution:__
 
 The solution to these problems is hirng a cloud computing setup. The benefits include:
-- We do not pay for the upfront cost for procuring the resource - we pay as go.
+- We do not pay for the upfront cost for procuring the resource - Pay As You Go.
 - Infrastructure as a Service (IAAC)
 - Flexibility - Elastic in nature, we can scale out or scale in as needed or required.
 - Managing Infrastructure becomes easier.
@@ -36,7 +36,7 @@ The services we are going to be using in this Project include:
 
 - __EC2 Instances__ - For Tomcat, RabbitMQ, Memcache and Mysql
 - __Elastic Load Balancer__ - To replace Nginx Load Balancer
-- __Auto Scaling__ - For Automation of Virtual Machine Scaling(to scale out or scaling our EC@ Instances which will automatically control our resources and it is cost effective)
+- __Auto Scaling__ - For Automation of Virtual Machine Scaling(to scale out or scaling our EC2 Instances which will automatically control our resources and it is cost effective)
 - __S3 or EFS__ - For storage - For shared storage.
 - __Route 53__ - For private DNS Service.
 - other services include: __IAM__ and __ACM__.
