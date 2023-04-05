@@ -1,8 +1,8 @@
-## __LIFT AND SHIFT MIGRATION TO CLOUD - LIFT AND SHIFT APPLICATION WORKLOAD__ ##
+## __MIGRATING MULTI TIER APPLICATION WORKLOAD TO AWS CLOUD USING LIFT AND SHIFT MIGRATION APPROACH__ ##
 
 The __Lift and Shift  Migration Approach__ is about migrating your application and associated data to the cloud with minimal or no changes. Applications are effectively “lifted” from the existing environments and “shifted” as-is to a new hosting premises; i.e. in the cloud. As such, there are often no significant changes to make in the application architecture, data flow, or authentication mechanisms. 
 
-__About the Project:__
+## __THE PROJECT__ ###
 
 We are going to employ the __Lift and Shift  Migration Approach__ to migrate __MULTI TIER WEB APPLICATION STACK__ to the AWS Cloud, host and run it for Production.
 
@@ -66,7 +66,7 @@ These backend services will be in a seperate security group.
 __N/B:__
 Purchase a domain name from _godaddy, namesilo, namecheap_ etc and do the validation from the domain provider.
 
-## __FLOW OF EXECUTION__
+### __FLOW OF EXECUTION__ ###
 
 - Login to AWS Account
 - Create Key pairs
