@@ -617,7 +617,6 @@ Create the __Launch Configurations__ for the Auto Scaling Group.
 ![image](./images/lc3.PNG)
 ![image](./images/lc4.PNG)
 ![image](./images/lc5.PNG)
-![image](./images/lc6.PNG)
 
 Create __Auto Scaling Group__
 
