@@ -46,7 +46,7 @@ __Objective:__
 - Flexible Infrastructure.
 - No Upfront cost - Pay As You Go Model.
 - Modernize our Application more effectively by using AWS.
-- Automation - Infrastructure as a Code(IAAS).
+- Automation - Infrastructure as a Code(IAAC).
 
 __ARCHITECTURE OF THE MULTI TIER WEB APPLICATION STACK__
 
