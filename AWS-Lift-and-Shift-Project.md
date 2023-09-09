@@ -295,7 +295,7 @@ All backend server records mapped in __Route 53__
 
 ![image](./images/rq.PNG)
 
-In our __application.properties__ file in the source code, we will mention these mapped names and not the IP addresses. Even if we replace the backend servers and the same names are mapped to the IP addresses, we will not need to make changes in the application server(tomcat).
+In our [__application.properties__](https://github.com/dybran/AWS-Lift-and-Shift-Project/blob/main/src/main/resources/application.properties) file in the source code, we will mention these mapped names and not the IP addresses. Even if we replace the backend servers and the same names are mapped to the IP addresses, we will not need to make changes in the application server(tomcat).
 
 __Build Application from source code__
 
@@ -331,11 +331,11 @@ Open __POWERSHELL__ and __run as administartor__. Install __maven__ and __jdk8__
 
 The __java__ version on __maven__ should be the same as the __jdk8__ version. If not should uninstalled and installed again.
 
-In our __application.properties__ file we will update the backend servers with their mapped DNS.
+In the [__application.properties__](https://github.com/dybran/AWS-Lift-and-Shift-Project/blob/main/src/main/resources/application.properties) file we will update the backend servers with their mapped DNS.
 
 ![image](./images/app-res.PNG)
 
-Open the __application.properties__ file
+Open the [__application.properties__](https://github.com/dybran/AWS-Lift-and-Shift-Project/blob/main/src/main/resources/application.properties) file
 
 `$ vim application.properties`
 
@@ -347,7 +347,7 @@ __N/B:__
 
 Changes are made here if any of the port numbers were changed.
 
-Go bak to where we have the __pom.xml__ file and run the command
+Go back to where we have the __pom.xml__ file and run the command
 
 `$ mvn install`
 
