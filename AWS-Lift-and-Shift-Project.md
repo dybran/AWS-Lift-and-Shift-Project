@@ -337,7 +337,7 @@ In the [__application.properties__](https://github.com/dybran/AWS-Lift-and-Shift
 
 Open the [__application.properties__](https://github.com/dybran/AWS-Lift-and-Shift-Project/blob/main/src/main/resources/application.properties) file
 
-`$ vim application.properties`
+`$ vim /src/main/resources/application.properties`
 
 and update the file
 
