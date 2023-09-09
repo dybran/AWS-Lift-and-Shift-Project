@@ -24,7 +24,7 @@ __Solution:__
 
 The solution to these problems is hirng a cloud computing setup. The benefits include:
 - We do not pay for the upfront cost for procuring the resource - Pay As You Go.
-- Infrastructure as a Service (IAAC)
+- Infrastructure as a Service (IAAS)
 - Flexibility - Elastic in nature, we can scale out or scale in as needed or required.
 - Managing Infrastructure becomes easier.
 - Automation - Every step and process can be automated to avoid human errors.
